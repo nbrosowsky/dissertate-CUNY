@@ -1,0 +1,287 @@
+---
+output: pdf_document
+---
+
+```{r setup1, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+\doublespacing
+
+# Appendix A: R Code for Chapter 5 {-}
+
+\singlespace
+
+Required: R Packages from CRAN
+
+\small
+```{r, echo=TRUE, eval=FALSE}
+if (!require(tidyverse)){
+  install.packages("tidyverse")
+  library(tidyverse)
+}
+if (!require(furniture)){
+  install.packages("furniture")
+  library(furniture)
+}
+if (!require(here)){
+  install.packages("here")
+  library(here)
+}
+if (!require(devtools)){
+  install.packages("devtools")
+  library(devtools)
+}
+```
+\normalsize
+
+Required: R Packages from GitHub
+
+\small
+```{r, echo=TRUE, eval=FALSE}
+if (!require(MarginalMediation)){
+  devtools::install_github("tysonstanley/MarginalMediation")
+  library(MarginalMediation)
+}
+```
+\normalsize
+
+\clearpage
+
+## Examples from Chapter 5 {-}
+
+Figure \ref{fig:interaction} on page \pageref{fig:interaction}
+
+\small
+```{r interaction_example, eval=FALSE}
+```
+\normalsize
+
+\clearpage
+
+
+## Monte Carlo Simulation {-}
+
+Notably, the code for both the binary mediator condition and the count mediator condition we run via the Terminal as, once the directory was where the R file was located:
+
+\small
+```{bash, eval=FALSE}
+Rscript Analyses_MMMC_scriptBinary.R 'c(1:45)'
+```
+\normalsize
+
+\noindent and
+
+\small
+```{bash, eval=FALSE}
+Rscript Analyses_MMMC_scriptCount.R 'c(1:45)'
+```
+\normalsize
+
+Binary Mediator
+
+\small
+```{r, eval=FALSE}
+## Marginal Mediation: Monte Carlo Simulation Study
+##   BINARY Mediator
+## Tyson S. Barrett
+##
+## devtools::install_github("tysonstanley/MarginalMediation")
+
+args <- commandArgs(TRUE)
+args <- eval(parse(text = args))
+library(MarginalMediation)
+library(tidyverse)
+
+## Create all combinations of independent variables
+cond_binary <- expand.grid(
+  samplesize = c(50, 100, 200, 500, 1000),
+  effecta = c(.55, 1.45, 2.22),
+  effectb = c(.24, .62, 1.068),
+  effectc = c(.3)
+)
+
+## Population Models
+## Binary Mediator
+data_genB <- function(ps, reps, samplesize, effecta, effectb, effectc) {
+  set.seed(84322)
+  Xc <- rnorm(ps)
+  z <- effecta * Xc + rnorm(ps, 0, 1)
+  pr <- 1 / (1 + exp(-z))
+  M <- rbinom(ps, 1, pr)
+  Y <- effectb * M + effectc * Xc + rnorm(ps, 0, 1)
+  M <- factor(M)
+  df <- data.frame(Y, M, Xc)
+  bin <- vector("list", reps)
+
+  print(cbind(samplesize, effecta, effectb))
+  print(lm(Y ~ M + Xc)$coefficients)
+  print(lm(scale(Y) ~ M + Xc)$coefficients)
+  med <- amed(glm(M ~ Xc, df, family = "binomial"))
+
+  for (i in 1:reps) {
+    d <- df[sample(ps, samplesize), ]
+    pathbc <- glm(Y ~ M + Xc, data = d)
+    patha <- glm(M ~ Xc, data = d, family = "binomial")
+    bin[[i]] <- mma(pathbc, patha,
+      ind_effects = c("Xc-M"),
+      boot = 500
+    )
+    bin[[i]] <- list(
+      "IndEffects" = bin[[i]]$ind_effects,
+      "DirEffects" = bin[[i]]$dir_effects,
+      "Boot" = bin[[i]]$boot,
+      "Total" = lm(Y ~ Xc, d)$coefficients,
+      "MedSize" = med
+    )
+    cat("\r", i)
+  }
+  print(exp(glm(M ~ Xc, family = "binomial")$coefficients))
+  return(bin)
+}
+
+i = 0
+for (j in args){
+  set.seed(84322)
+  i = i + 1
+  cat("\nNumber:", j, "\n\n")
+  
+  out = data_genB(1e6, 500, 
+                  cond_binary[args[[i]],1], 
+                  cond_binary[args[[i]],2], 
+                  cond_binary[args[[i]],3], 
+                  cond_binary[args[[i]],4])
+  
+  save(out, file = paste0("Sims_Data/Binary2_", 
+                          cond_binary[args[[i]],1], "_",
+                          cond_binary[args[[i]],2], "_",
+                          cond_binary[args[[i]],3], "_",
+                          cond_binary[args[[i]],4], ".rda"))
+  
+  cat("\nNumber:", j, "\n\n")
+  cat("\nConditions Complete:\n",
+      " Sample size =", cond_binary[args[[i]],1], 
+      "\n  A path      =", cond_binary[args[[i]],2], 
+      "\n  B path      =", cond_binary[args[[i]],3], 
+      "\n  C path      =", cond_binary[args[[i]],4], "\n")
+}
+```
+\normalsize
+
+Count Mediator
+
+\small
+```{r, eval=FALSE}
+## Marginal Mediation: Monte Carlo Simulation Study
+##   COUNT Mediator
+## Tyson S. Barrett
+##
+## devtools::install_github("tysonstanley/MarginalMediation")
+
+args <- commandArgs(TRUE)
+args <- eval(parse(text = args))
+library(MarginalMediation)
+library(tidyverse)
+
+## Create all combinations of independent variables
+cond_count = expand.grid(
+  samplesize = c(50, 100, 200, 500, 1000),
+  effecta    = c(.3, .6, 1.1),
+  effectb    = c(.084, .265, .49),
+  effectc    = c(0, .3)
+)
+
+## Population Models
+## Count Mediator
+data_genC = function(ps, reps, samplesize, effecta, effectb, effectc){
+  set.seed(84322)
+  Xc = rnorm(ps)
+  m1 = exp(effecta * Xc)
+  M  = rpois(ps, lambda=m1)
+  Y  = effectb*M + effectc*Xc + rnorm(ps, 0, 1)
+  df = data.frame(Y, M, Xc)
+  poi  = vector("list", reps)
+  
+  print(cbind(samplesize, effecta, effectb))
+  print(lm(Y ~ M + Xc)$coefficients)
+  print(lm(scale(Y) ~ M + Xc)$coefficients)
+  med = amed(glm(M ~ Xc, df, family = "poisson"))
+  
+  for (i in 1:reps){
+    d = df[sample(ps, samplesize), ]
+    pathbc = glm(Y ~ M + Xc, data = d)
+    patha  = glm(M ~ Xc, data = d, family = "poisson")
+    poi[[i]] = mma(pathbc, patha,
+                   ind_effects = c("Xc-M"),
+                   boot = 500)
+    poi[[i]] = list("IndEffects" = poi[[i]]$ind_effects, 
+                    "DirEffects" = poi[[i]]$dir_effects, 
+                    "Boot"       = poi[[i]]$boot, 
+                    "Total"      = lm(Y ~ Xc, d)$coefficients,
+                    "MedSize"    = med)
+    cat("\r", i)
+  }
+  print(exp(glm(M ~ Xc, family = "poisson")$coefficients))
+  return(poi)
+}
+
+i = 0
+for (j in args){
+  set.seed(84322)
+  i = i + 1
+  cat("\nNumber:", j, "\n\n")
+  
+  out = data_genC(1e6, 500, 
+                  cond_count[args[[i]],1], 
+                  cond_count[args[[i]],2], 
+                  cond_count[args[[i]],3], 
+                  cond_count[args[[i]],4])
+  
+  save(out, file = paste0("Sims_Data/Count2_", 
+                          cond_count[args[[i]],1], "_",
+                          cond_count[args[[i]],2], "_",
+                          cond_count[args[[i]],3], "_",
+                          cond_count[args[[i]],4], ".rda"))
+  
+  cat("\nNumber:", j, "\n\n")
+  cat("\nConditions Complete:\n",
+      " Sample size =", cond_count[args[[i]],1], 
+      "\n  A path      =", cond_count[args[[i]],2], 
+      "\n  B path      =", cond_count[args[[i]],3], 
+      "\n  C path      =", cond_count[args[[i]],4], "\n")
+}
+```
+\normalsize
+
+\clearpage
+
+## Monte Carlo Simulation Data Analyses {-}
+
+Data Preparations for tables and figures around page \pageref{tab_discrep}
+
+\small
+```{r sim_data_clean, eval=FALSE}
+```
+\normalsize
+
+Table \ref{tab_discrep} on page \pageref{tab_discrep}
+
+\small
+```{r sim_total_tab, eval=FALSE}
+```
+\normalsize
+
+Figure \ref{fig:totaltotal} on page \pageref{fig:totaltotal}
+
+\small
+```{r total_fig, eval=FALSE}
+```
+\normalsize
+
+Figures \ref{fig_power}, \ref{fig_acc}, and \ref{fig_ci} on pages \pageref{fig_power}, \pageref{fig_acc}, and \pageref{fig_ci}, respectively.
+
+\small
+```{r acc_power_cover, eval=FALSE}
+```
+\normalsize
+

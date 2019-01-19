@@ -1,0 +1,28 @@
+---
+title: "Introduction"
+output: pdf_document
+---
+
+# Section 1
+
+Selective attention is commonly investigated using interference paradigms such as the Stroop [-@stroop_studies_1935] and flanker [@eriksen_effects_1974] tasks, where participants identify a target while ignoring a response-congruent or -incongruent distractor. Performance is typically better on congruent versus incongruent trials and the difference---the congruency effect---taken as an index of attentional priorities. Large congruency effects are thought to reflect ineffective filtering of the distracting stimuli whereas small congruency effects are thought to reflect effective filtering. By probing factors that systematically alter congruency effects, we can then make inferences about processes that control attentional filtering. For example, manipulating the frequency of conflict via the proportion of congruent versus incongruent trials has shown to influence the size of the congruency effect. 
+
+\begin{figure}
+  \centering
+  \includegraphics[width=5in]{figures/figure1.pdf}
+  \caption{Illustration of the trial sequence for all experiments.}
+  \caption*{Note that the target could appear above or below the fixation. The identity cue ("Color?" or "Letter?") always appeared in the center of the screen while the position cue ("- - ? -") always appeared in the same location as the target. Participants were instructed to report either the letter or color in the cued position.}
+
+  \label{figure1}
+\end{figure}
+
+# Section 2
+
+Typically, a high proportion congruent experiment produces large congruency effects, whereas a low proportion congruent experiment produces small congruency effects [@logan_when_1979; @lowe_selective_1982; @west_effects_1998]. This result is usually  explained as strategic control, where participants increase attentional control under high-conflict demands and relax attentional control under low-conflict demands [@logan_attention_1980; @logan_strategies_1984; @logan_when_1979; @lowe_selective_1982]. 
+
+## Sub section
+
+Recent work however, has demonstrated that attentional control is not only adjusted by top-down regulation, but can also be triggered automatically by environmental cues [@brosowsky_memory-guided_2018; @bugg_support_2012; @egner_creatures_2014; @fischer_predicting_2015; @king_priming_2012; @mayr_outsourcing_2007]. 
+
+<!-- add some dummy text -->
+\lipsum[1-9]

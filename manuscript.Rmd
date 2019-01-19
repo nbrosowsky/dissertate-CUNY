@@ -1,0 +1,336 @@
+---
+documentclass: DissertateCUNY
+title: 'Memory-guided selective attention'
+author: Nicholaus P. Brosowsky
+output:
+  pdf_document:
+    latex_engine: xelatex
+    includes:
+      in_header: preamble.tex
+    keep_tex: yes
+mainfont: Times New Roman
+bibliography: sample.bib
+csl: APA_format.csl
+geometry: [top=1in, bottom=1in, right=1in, left=1in]
+nocite: |
+  @Burnham2002
+  @Iacobucci2007
+  @Mood2010
+  @Norton2012
+  @Edwards2007
+  @Hastie2009
+params:
+  year: '2019'
+  degree: 'Doctor of Philosophy'
+  field: 'Psychology'
+  chair: 'Matthew J.C. Crump, Ph.D.'
+  advisor: 'Matthew J.C. Crump, Ph.D'
+  committee1: 'Jamison Fargo, Ph.D.'
+  committee2: 'Rick Cruz, Ph.D.'
+  committee3: 'Michael Levin, Ph.D.'
+  committee4: 'Adele Cutler, Ph.D.'
+  executiveOfficer: 'Richard Bodnar, Ph.D.'
+  abstract: 'Evidence across a wide variety of attention paradigms shows that environmental cues can trigger adjustments to ongoing priorities for attending to relevant and irrelevant information. This context-specific control over attention suggests that cognitive control can be both automatic and flexible. For instance, in selective attention tasks, congruency effects are larger for items that appear in a context associated with infrequent conflict than in a context associated with frequent conflict. Since the to-be-presented context cannot be predicted or prepared for in advance, attention is assumed to be rapidly updated on-the-fly, triggered by the currently presented context. Context-specific control exemplifies how learning and memory processes can influence attention to enable cognitive flexibility. However, what determines the use of previously learned associations still remains unclear. In the current study, we examined whether task-relevance would influence the learning and use of context cues in a flanker task. Using a secondary counting task, context dimensions associated with differing levels of conflict were made task-relevant or -irrelevant across the experiment. In short, we found that making new contextual information task-relevant caused participants to ignore a previously learned context-attention association and adopt a new context-specific control strategy; all without changing the experimental stimuli. This result suggests that task-relevance is a key determinant of context-specific control.'
+
+
+---
+
+```{r global_options, include=FALSE}
+## This saves you from having to do this for every chunk
+knitr::opts_chunk$set(fig.path = 'figures/',
+                      echo = FALSE, 
+                      warning = FALSE, 
+                      message = FALSE)
+
+## Do NOT Remove / adds params to doc
+cat(paste0("\\usepackage{xspace}\n",
+      "\\newcommand{\\yeardegree}{",params$year,"\\xspace}",
+      "\\newcommand{\\degree}{",params$degree,"\\xspace}\n",
+      "\\newcommand{\\field}{",params$field,"\\xspace}\n",
+      "\\newcommand{\\chairperson}{", params$chair, "\\xspace}\n",
+      "\\newcommand{\\committeeone}{", params$committee1, "\\xspace}\n",
+      "\\newcommand{\\committeetwo}{", params$committee2, "\\xspace}\n",
+      "\\newcommand{\\committeethree}{", params$committee3, "\\xspace}\n",
+      "\\newcommand{\\committeefour}{", params$committee4, "\\xspace}\n",
+      "\\newcommand{\\gradschoolguy}{", params$gradschool, "\\xspace}\n",
+      "\\newcommand{\\EO}{", params$executiveOfficer, "\\xspace}\n",
+      "\\newcommand{\\advisor}{", params$advisor, "\\xspace}\n",
+      "\\newcommand{\\abstract}{", params$abstract, "\\xspace}\n",
+      "% Tables
+      \\usepackage{booktabs}
+      \\usepackage{threeparttable}
+      \\usepackage{array}
+      \\newcolumntype{x}[1]{%
+      >{\\centering\\arraybackslash}m{#1}}%
+      \\usepackage{placeins}
+      \\usepackage{chngcntr}
+      \\counterwithin{figure}{chapter}
+      \\counterwithin{table}{chapter}
+      \\usepackage[makeroom]{cancel}\n"
+      ),file = "preamble.tex")
+```
+<!-- Title page printed automatically -->
+\copyrightpage
+\abstractpage
+
+
+<!-- Dedication -->
+\newpage
+\fancyhead[L]{Dedication}
+\fancyhead[R]{\thepage}
+\fancyfoot[C]{}
+\chapter*{DEDICATION}
+\addcontentsline{toc}{section}{Dedication}
+
+<!-- text can be added directly -->
+Dedicate it.
+
+<!-- Acknowledgements -->
+\newpage
+\fancyhead[L]{Acknowledgments}
+\fancyhead[R]{\thepage}
+\fancyfoot[C]{}
+\chapter*{ACKNOWLEDGEMENTS}
+\addcontentsline{toc}{section}{Acknowledgments}
+
+Acknowledge them.
+
+<!-- Front Matter -->
+\newpage
+\fancyhead[L]{Table of Contents}
+\fancyhead[R]{\thepage}
+\fancyfoot[C]{}
+\tableofcontents
+
+\newpage
+\fancyhead[L]{List of Tables}
+\fancyhead[R]{\thepage}
+\fancyfoot[C]{}
+\listoftables
+
+\newpage
+\fancyhead[L]{List of Figures}
+\fancyhead[R]{\thepage}
+\fancyfoot[C]{}
+\listoffigures
+
+
+\newpage
+\pagenumbering{arabic}
+
+<!-- Introduction -->
+\newpage
+\fancyhead[L]{Introduction}
+\fancyhead[R]{\thepage}
+\fancyfoot[C]{}
+
+\chapter{INTRODUCTION}
+
+<!-- text can also be added by referring to another rmd file -->
+```{r child = 'sample_introduction.Rmd'}
+```
+
+\FloatBarrier
+
+<!-- Chapter 2 -->
+\newpage
+\fancyhead[L]{Chapter 2: running header}
+\fancyhead[R]{\thepage}
+\fancyfoot[C]{}
+
+\chapter{Chapter 2: This chapter includes a latex table}
+
+<!-- add some dummy text -->
+\lipsum[1-4]
+
+\begin{table}[htbp]
+  \centering
+  \caption{Add caption}
+  \resizebox{\textwidth}{!}{
+    \begin{tabular}{rrcccccc}
+    \toprule &  
+    & \multicolumn{4}{c}{ Trial \textit{n}} 
+    & \multicolumn{1}{c}{ Congruency Effect } 
+    & \multicolumn{1}{c}{ $\textit{n}-1$ CSE} \\
+    \cmidrule{3-6} &       
+    & \multicolumn{2}{c}{ Con} 
+    & \multicolumn{2}{c}{ Inc} 
+    & \multicolumn{1}{c}{ $(I-C)$} 
+    & \multicolumn{1}{c}{ ($C_{(I-C)} - I_{(I-C)})$} \\
+    \cmidrule{3-8}
+    & \multicolumn{1}{c}{ Trial $\textit{n}-1$} 
+    & \multicolumn{1}{c}{ \textit{RT}} 
+    & \multicolumn{1}{c}{ \textit{ER}} 
+    & \multicolumn{1}{c}{ \textit{RT}} 
+    & \multicolumn{1}{c}{ \textit{ER}} 
+    & \multicolumn{1}{c}{ \textit{RT}} 
+    & \multicolumn{1}{c}{ \textit{RT}} \\
+    \midrule
+    \multicolumn{2}{c}{\textbf{Exp. 1A}}  &   &    &     &     &    &  \\
+    & \multicolumn{1}{c}{Con} 
+    & \multicolumn{1}{c}{626 (22)} 
+    & \multicolumn{1}{c}{2.97 (.55)} 
+    & \multicolumn{1}{c}{658 (22)} 
+    & \multicolumn{1}{c}{3.48 (.48)}
+    & \multicolumn{1}{c}{32 (7)} 
+    & \multicolumn{1}{c}{-3 (13)} \\
+    & \multicolumn{1}{c}{Inc} 
+    & \multicolumn{1}{c}{635 (21)} 
+    & \multicolumn{1}{c}{3.55 (.46)} 
+    & \multicolumn{1}{c}{671 (25)} 
+    & \multicolumn{1}{c}{4.48 (.72)} 
+    & \multicolumn{1}{c}{36 (9)} &  \\
+    \multicolumn{2}{c}{\textbf{Exp. 1B}} &    &     &     &     &     &  \\
+    & \multicolumn{1}{c}{Con} 
+    & \multicolumn{1}{c}{753 (21)} 
+    & \multicolumn{1}{c}{2.40 (.51)} 
+    & \multicolumn{1}{c}{832 (25)} 
+    & \multicolumn{1}{c}{3.48 (.53)} 
+    & \multicolumn{1}{c}{78 (10)} 
+    & \multicolumn{1}{c}{36 (12)} \\
+    & \multicolumn{1}{c}{Inc}
+    & \multicolumn{1}{c}{791 (24)} 
+    & \multicolumn{1}{c}{3.58 (.54)} 
+    & \multicolumn{1}{c}{671 (25)}
+    & \multicolumn{1}{c}{3.23 (.71)} 
+    & \multicolumn{1}{c}{42 (14)} &  \\
+    \multicolumn{2}{c}{\textbf{Exp. 1C}} &       &       &       &       &       &  \\
+    & \multicolumn{1}{c}{Con} 
+    & \multicolumn{1}{c}{771 (27)} 
+    & \multicolumn{1}{c}{2.46 (.37)} 
+    & \multicolumn{1}{c}{834 (27)} 
+    & \multicolumn{1}{c}{2.66 (.39)} 
+    & \multicolumn{1}{c}{62 (6)} 
+    & \multicolumn{1}{c}{27 (7)} \\
+    & \multicolumn{1}{c}{Inc} 
+    & \multicolumn{1}{c}{794 (25)} 
+    & \multicolumn{1}{c}{2.91 (.40)} 
+    & \multicolumn{1}{c}{829 (26)} 
+    & \multicolumn{1}{c}{2.65 (.38)} 
+    & \multicolumn{1}{c}{35 (7)} &  \\
+    &       &       &       &       &       &       &  \\
+    \midrule
+    \multicolumn{2}{c}{\textbf{Exp. 2A}} &       &       &       &       &       &  \\
+    & \multicolumn{1}{c}{Con} 
+    & \multicolumn{1}{c}{557 (17)} 
+    & \multicolumn{1}{c}{2.36 (.38)} 
+    & \multicolumn{1}{c}{593 (16)} 
+    & \multicolumn{1}{c}{4.36 (.57)} 
+    & \multicolumn{1}{c}{36 (6)} 
+    & \multicolumn{1}{c}{8 (8)} \\
+    & \multicolumn{1}{c}{Inc} 
+    & \multicolumn{1}{c}{576 (18)} 
+    & \multicolumn{1}{c}{3.59 (.47)} 
+    & \multicolumn{1}{c}{605 (19)} 
+    & \multicolumn{1}{c}{3.80 (.60)} 
+    & \multicolumn{1}{c}{28 (6)} &  \\
+    \multicolumn{2}{c}{\textbf{Exp. 2B}} &       &       &       &       &       &  \\
+    & \multicolumn{1}{c}{Con} 
+    & \multicolumn{1}{c}{568 (20)} 
+    & \multicolumn{1}{c}{1.91 (.37)} 
+    & \multicolumn{1}{c}{638 (24)} 
+    & \multicolumn{1}{c}{4.67 (.61)} 
+    & \multicolumn{1}{c}{70 (5)} 
+    & \multicolumn{1}{c}{33 (6)} \\
+    & \multicolumn{1}{c}{Inc} 
+    & \multicolumn{1}{c}{606 (24)} 
+    & \multicolumn{1}{c}{2.83 (.41)} 
+    & \multicolumn{1}{c}{643 (23)} 
+    & \multicolumn{1}{c}{3.78 (.58)} 
+    & \multicolumn{1}{c}{37 (7)} &  \\
+    &       &       &       &       &       &       &  \\
+    \midrule
+    \multicolumn{2}{c}{\textbf{Exp. 3A}} &       &       &       &       &       &  \\
+    & \multicolumn{1}{c}{Con} 
+    & \multicolumn{1}{c}{837 (24)} 
+    & \multicolumn{1}{c}{2.18 (.45)} 
+    & \multicolumn{1}{c}{880 (20)} 
+    & \multicolumn{1}{c}{2.65 (.41)} 
+    & \multicolumn{1}{c}{43 (8)}
+    & \multicolumn{1}{c}{22 (12)} \\
+    & \multicolumn{1}{c}{Inc} 
+    & \multicolumn{1}{c}{855 (21)} 
+    & \multicolumn{1}{c}{2.83 (.40)} 
+    & \multicolumn{1}{c}{876 (22)} 
+    & \multicolumn{1}{c}{2.85 (.56)} 
+    & \multicolumn{1}{c}{20 (8)} &  \\
+    \multicolumn{2}{c}{\textbf{Exp. 3B}} &       &       &       &       &       &  \\
+    & \multicolumn{1}{c}{Con} 
+    & \multicolumn{1}{c}{860 (23)} 
+    & \multicolumn{1}{c}{2.54 (.38)} 
+    & \multicolumn{1}{c}{889 (24)} 
+    & \multicolumn{1}{c}{2.38 (.42)} 
+    & \multicolumn{1}{c}{30 (7)} 
+    & \multicolumn{1}{c}{13 (10)} \\
+    & \multicolumn{1}{c}{Inc} 
+    & \multicolumn{1}{c}{873 (24)} 
+    & \multicolumn{1}{c}{2.28 (.36)} 
+    & \multicolumn{1}{c}{889 (23)} 
+    & \multicolumn{1}{c}{2.43 (.35)} 
+    & \multicolumn{1}{c}{16 (8)} &  \\
+    &       &       &       &       &       &       &  \\
+    \bottomrule
+    \multicolumn{8}{l}{\textit{Note}: This is the note info} \\
+    \end{tabular}}%
+  \label{tab:addlabel}%
+\end{table}
+
+
+\FloatBarrier
+
+<!-- Chapter 3 -->
+\newpage
+\fancyhead[L]{Chapter 3's Title}
+\fancyhead[R]{\thepage}
+\fancyfoot[C]{}
+
+\chapter{Chapter 3's Title}
+
+Don't stop now.
+
+
+\FloatBarrier
+\newpage
+\fancyhead[L]{Chapter 4's Title}
+\fancyhead[R]{\thepage}
+\fancyfoot[C]{}
+
+\chapter{Chapter 4's Title}
+
+Keep it going.
+
+
+\FloatBarrier
+\newpage
+\fancyhead[L]{Chapter 5's Title}
+\fancyhead[R]{\thepage}
+\fancyfoot[C]{}
+
+\chapter{Chapter 5's Title}
+
+Well done.
+
+\FloatBarrier
+\newpage
+
+\fancyhead[L]{References}
+\fancyhead[R]{\thepage}
+\fancyfoot[C]{}
+
+\chapter*{REFERENCES}
+
+\setlength{\parindent}{-0.5in}
+\setlength{\leftskip}{0.5in}
+\setlength{\parskip}{6pt}
+\noindent
+
+<div id="refs"></div>
+\clearpage
+
+\fancyhead[L]{Appendices}
+\fancyhead[R]{\thepage}
+\fancyfoot[C]{}
+\chapter*{APPENDICES}
+\addcontentsline{toc}{chapter}{APPENDICES}
+```{r, child = "sample_appendix.Rmd", size="tiny"}
+```
