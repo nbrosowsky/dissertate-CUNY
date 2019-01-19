@@ -10,6 +10,10 @@ and the CUNY latex template created by George Leibman ([GC latex thesis](https:/
 - Contains all necessary code for knitting a dissertation in R Markdown.  
 - Contains example code for chapters, figures, tables, appendices, etc.
 
+usage:
+- edit text
+- knit (there are no dependencies)
+
 todo:
 - create R package
 - add completed disseration
