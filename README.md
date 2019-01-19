@@ -11,7 +11,7 @@ and the CUNY latex template created by George Leibman ([GC latex thesis](https:/
 - Contains example code for chapters, figures, tables, appendices, etc.
 
 usage:
-- edit text
+- edit manuscript.Rmd
 - knit (there are no dependencies)
 
 todo:
