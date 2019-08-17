@@ -9,7 +9,7 @@ output:
       in_header: preamble.tex
     keep_tex: yes
 mainfont: Times New Roman
-bibliography: sample.bib
+bibliography: references.bib
 csl: APA_format.csl
 geometry: [top=1in, bottom=1in, right=1in, left=1in]
 nocite: |
@@ -66,11 +66,13 @@ cat(paste0("\\usepackage{xspace}\n",
       \\usepackage{chngcntr}
       \\counterwithin{figure}{chapter}
       \\counterwithin{table}{chapter}
+      \\usepackage{lipsum}
       \\usepackage[makeroom]{cancel}\n"
       ),file = "preamble.tex")
 ```
 <!-- Title page printed automatically -->
 \copyrightpage
+\approvalpage
 \abstractpage
 
 

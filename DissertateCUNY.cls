@@ -13,7 +13,6 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{DissertateCUNY}[2018/12/14 v1.0 DissertateCUNY Class]
 \LoadClass[12pt, oneside, letterpaper]{book}
-\usepackage{lipsum} 
 
 
 
@@ -97,7 +96,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% LAYOUT: TABLE of CONTENTS -auto fill %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\setcounter{tocdepth}{3}
+\setcounter{tocdepth}{2}
 \usepackage[titles]{tocloft}
 \usepackage[titletoc]{appendix}
 \renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
@@ -190,22 +189,23 @@
 {}
 
 \titleformat{\section}[display]
-{\normalfont\normalsize\bfseries}
+{\normalfont\normalsize\bfseries\center}
 {}
 {0pt}
 {{}}
 
 \titleformat{\subsection}[display]
-{\normalfont\normalsize\itshape}
+{\normalfont\normalsize\bfseries}
 {}
 {0pt}
 {{}}
 
-\titleformat{\subsubsection}[display]
-{\normalfont\normalsize}
+\titleformat{\subsubsection}[runin]
+{\normalfont\normalsize\bfseries\itshape}
 {}
 {0pt}
 {{}}
+\titlespacing*{\subsubsection}{\parindent}{1ex}{0.5em}
 
 % An environment for paragraph-style section.
 \providecommand\newthought[1]{%
@@ -234,9 +234,9 @@
         ~\vspace{2in}
         
         \doublespaced
-        \textsc{\@title} \\[0.5in]
+        \textsc{\MakeUppercase{\@title}} \\[0.5in]
         by \\[0.5in]
-        \textsc{\@author} 
+        \textsc{\MakeUppercase{\@author}} 
 
         \vspace{\fill}
         \doublespaced
@@ -249,11 +249,15 @@
     
     \pagenumbering{roman}
     \setcounter{page}{2}
+	\clearpage
+}
 
 
+\newcommand{\approvalpage}{
+\newpage
 	\begin{center}
     \singlespaced
-	\MakeUppercase{\@title}\\
+	\@title\\
     \doublespaced
 	by\\
 	\@author \\ 
@@ -289,9 +293,8 @@
     \begin{center}
         \textsc{THE CITY UNIVERSITY OF NEW YORK}
     \end{center}
-	\clearpage
-}
 
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% LAYOUT: Copy Right - info filled above    %%
@@ -301,7 +304,7 @@
     \begin{center}
         \doublespaced
         \copyright~\yeardegree\\
-            \textsc{\@author}\\
+            \textsc{\MakeUppercase{\@author}}\\
             All Rights Reserved\\
         \end{center}
 }
