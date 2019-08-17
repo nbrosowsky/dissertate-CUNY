@@ -1,6 +1,8 @@
 # Dissertate-CUNY
 R markdown (w/ Latex) Template for writing a dissertation at CUNY
 
+(Update: My completed dissertation using this template [can be found here](https://github.com/nbrosowsky/open-science/tree/master/2019_Brosowsky_Dissertation))
+
 Follows the CUNY formatting guide for dissertations and theses ([CUNY format guide](https://libguides.gc.cuny.edu/dissertations/format))
 
 Adapted from 
